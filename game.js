@@ -11,6 +11,8 @@ const game = new Phaser.Game({
   // width:       800,
 });
 
+window.day = 1;
+
 const loadState = {
     init: function() {},
 
@@ -110,7 +112,7 @@ const gameState = {
       this.gameTime += this.time.elapsed;
 
       let step = this.gameTime / 1000;
-      let steps = 30;
+      let steps = 60;
 
       if(this.generator1.on) {
         this.generator1.temp += this.time.elapsed * 0.01;
@@ -132,7 +134,7 @@ const gameState = {
         this.energy = Math.max(this.energy - this.time.elapsed * 0.007, 0);
 
         if(this.energy > 0) {
-          this.oxygen += this.time.elapsed * 0.0021;
+          this.oxygen += this.time.elapsed * 0.0024;
         }
 
         if(this.oxygen_generator.temp >= 80 || this.energy <= 0) {
@@ -156,7 +158,7 @@ const gameState = {
       }
 
       if(step >= steps) {
-        this.day += 1;
+        window.day += 1;
         this.state.start('eod');
       }
 
@@ -169,7 +171,6 @@ const gameState = {
       ];
 
       s = Math.floor((step / steps) * (colorSteps.length - 1));
-      console.log(s);
 
       isteps = steps / (colorSteps.length - 1);
       istep =  step % isteps;
@@ -206,10 +207,9 @@ const gameState = {
 const EODState = {
     create: function() {
       let world = this.world;
-      this.day = 1;
       let font = { font: '30px Visitor', fill: '#ffffff', align: 'center' };
       let font2 = { font: '54px Visitor', fill: '#ffffff', align: 'center' };
-      let day = this.add.text(this.world.centerX, this.world.centerY - 50, 'Day ' + this.day, font2);
+      let day = this.add.text(this.world.centerX, this.world.centerY - 50, 'Day ' + window.day, font2);
       day.anchor.setTo(0.5);
       let text = this.add.text(this.world.centerX, this.world.centerY, 'Start', font);
       text.anchor.setTo(0.5);
